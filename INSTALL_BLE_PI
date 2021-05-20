@@ -1,0 +1,48 @@
+Per realizzare la comunicazione BLE fra Raspberry Pi e Arduino, dobbiamo installare alcune librerie e pacchetti essenziali per Raspberry Pi.
+
+La prima di tutte è “bluez”.
+
+Per la sua installazione ti suggerisco di installare la sua ultima versione disponibile e, per verificarlo, è sufficiente andare sulla pagina:
+
+http://www.bluez.org/download/
+
+Al momento in cui scrivo queste righe, la versione più aggiornata disponibile è la 5.54.
+
+Per proseguire nell’installazione, è sufficiente aprire una finestra terminale sul tuo Raspberry Pi e lanciare i seguenti comandi:
+
+cd ~ wget
+http://www.kernel.org/pub/linux/bluetooth/bluez-5.54.tar.xz
+tar xvf bluez-5.54.tar.xz
+
+Dopodiché, posizionati nella cartella appena scompattata con:
+
+cd bluez-5.54
+
+E installare alcune dipendenze di cui bluez ha bisogno per funzionare e sono le seguenti:
+
+sudo apt-get update
+sudo apt-get install -y libusb-dev libdbus-1-dev libglib2.0-dev libudev-dev libical-dev libreadline-dev
+
+Fatto ciò, stando sempre nella cartella di bluez, dovrai lanciare i seguenti comandi per installare a tutti gli effetti bluez.
+
+I comandi, sono:
+
+export LDFLAGS=-lrt ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --enable-library -disable-systemd
+make
+sudo make install
+
+Per verificare se l’installazione è andata a buon fine, riavviamo Raspberry Pi.
+
+Attiviamo il servizio bluetooth su Raspberry così:
+
+sudo systemctl enable bluetooth
+
+Per eseguire infine la scan dei dispositivi BLE vicini al nostro Raspberry Pi:
+
+sudo hcitool lescan
+
+Ci manca un pezzo per terminare: un pacchetto Python.
+
+pip install bluepy
+
+
